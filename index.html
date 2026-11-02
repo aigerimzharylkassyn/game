@@ -73,13 +73,13 @@ input[type=range]{width:200px}
 <div id="insp" class="pnl" hidden><div id="ic"></div><p style="margin-top:12px;font-size:12px">[E] / tap to close</p></div>
 <div id="pause" class="ov" hidden style="background:#000c"><p>PAUSED</p><label>Volume <input type="range" id="vol" min="0" max="100" value="80"></label><button id="resume">RESUME</button></div>
 <div id="title" class="ov"><h1>THE HALLWAY</h1><p>Some doors should remain locked.</p><label style="font-size:12px;color:var(--dim)"><input type="checkbox" id="rf"> Reduce flashing &amp; camera shake</label><button id="enter">ENTER</button></div>
-<div id="ctrl" class="ov" hidden><p>WASD — move &nbsp;·&nbsp; MOUSE — look (move to edges to turn) &nbsp;·&nbsp; SHIFT — run &nbsp;·&nbsp; Q — turn around &nbsp;·&nbsp; E — interact &nbsp;·&nbsp; ESC — pause<br>Touch: left thumb moves, right thumb looks, E button interacts.<br><br>Headphones recommended. Look around often.</p><button id="begin">BEGIN</button></div>
+<div id="ctrl" class="ov" hidden><p>WASD — move &nbsp;·&nbsp; MOUSE — look (move to edges to turn) &nbsp;·&nbsp; SHIFT — run &nbsp;·&nbsp; Q — turn around &nbsp;·&nbsp; E — interact &nbsp;·&nbsp; ESC — pause<br>Touch: right thumb moves, left thumb looks, E button interacts.<br><br>Headphones recommended. Look around often.</p><button id="begin">BEGIN</button></div>
 <div id="card" hidden><div id="paper"></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ===== CENTRAL CONFIG: edit event info, password and tuning here =====
 const CFG={title:"THE HALLWAY",
- event:{name:"Halloween Team Building",date:"06.11",time:"18:00",location:"8.105",dressCode:"Halloween",details:"Entrance fee: ~3500tg"},
+ event:{name:"Halloween Team Building",date:"06.11",time:"19:00",location:"8.105",dressCode:"Halloween",details:"Entrance fee: ~3500tg"},
  puzzle:{password:"7314",maxFails:3,lockSec:5},
  horror:{distances:[17,12,8,4.8,2.7,1.35],holds:[1.6,1.1,.8,1.2,1.1,1.45]}};
 (()=>{
@@ -321,7 +321,7 @@ addEventListener('mousemove',e=>{if(touch||panel||paused||turnMotion||!['explore
 $('resume').onclick=()=>{if(AC)AC.resume();paused=false;$('pause').hidden=true;relock()};
 $('eb').onclick=()=>{panel?closeP():act(target)};
 let jid=null,lid=null,j0,lo;const cvs=R.domElement;
-cvs.addEventListener('touchstart',e=>{e.preventDefault();for(const t of e.changedTouches){if(t.clientX<innerWidth*.45&&jid===null){jid=t.identifier;j0={x:t.clientX,y:t.clientY};const j=$('joy');j.style.display='block';j.style.left=t.clientX+'px';j.style.top=t.clientY+'px'}else if(lid===null){lid=t.identifier;lo={x:t.clientX,y:t.clientY}}}},{passive:false});
+cvs.addEventListener('touchstart',e=>{e.preventDefault();for(const t of e.changedTouches){if(t.clientX>=innerWidth*.5&&jid===null){jid=t.identifier;j0={x:t.clientX,y:t.clientY};const j=$('joy');j.style.display='block';j.style.left=t.clientX+'px';j.style.top=t.clientY+'px'}else if(t.clientX<innerWidth*.5&&lid===null){lid=t.identifier;lo={x:t.clientX,y:t.clientY}}}},{passive:false});
 cvs.addEventListener('touchmove',e=>{e.preventDefault();for(const t of e.changedTouches){if(t.identifier===jid){joy.x=Math.max(-1,Math.min(1,(t.clientX-j0.x)/45));joy.y=Math.max(-1,Math.min(1,(t.clientY-j0.y)/45))}else if(t.identifier===lid&&(S==='explore'||S==='approach'||S==='unlocked')){yaw-=(t.clientX-lo.x)*.006;pitch=Math.max(-1.2,Math.min(1.2,pitch-(t.clientY-lo.y)*.006));lo={x:t.clientX,y:t.clientY}}}},{passive:false});
 const tend=e=>{for(const t of e.changedTouches){if(t.identifier===jid){jid=null;joy.x=joy.y=0;$('joy').style.display='none'}if(t.identifier===lid)lid=null}};cvs.addEventListener('touchend',tend);cvs.addEventListener('touchcancel',tend);
 addEventListener('resize',()=>{R.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()});
